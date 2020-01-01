@@ -1,3 +1,5 @@
+Placeholder for php 7.3 update - does not yet work on php 7.3
+
 phpVMS 5.5.2.72
 ===============
 
