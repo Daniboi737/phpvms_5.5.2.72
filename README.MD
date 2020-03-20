@@ -21,7 +21,7 @@ version. There are numerous changes to make this version php 7.2 compatible. It 
 version and that of your currently installed phpVMS version prior to installing. **It is suggested that you NOT install to your 
 live website environment until you complete any module and addon updates in a development environment.** Additionally, do NOT tie this
 installation directly to your present database - create a new database for this install (you can transfer data over AFTER all your
-modules and addons are working correctly.
+modules and addons are working correctly. **Be advised - there are changed/added data fields in the airports table in this version. Importing your existing airports table is not advised until you check the data fields and make any needed changes/additions.**
 
 **---------------------------------------------------------------------------------**
 
