@@ -96,8 +96,13 @@ CREATE TABLE `phpvms_airlines` (
 CREATE TABLE `phpvms_airports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `icao` varchar(5) NOT NULL DEFAULT '',
+  `iata` varchar(5) NOT NULL,
   `name` text NOT NULL,
+  `city` varchar(255) NOT NULL,
   `country` varchar(50) NOT NULL DEFAULT '',
+  `region` varchar(50) NOT NULL,
+  `tz` varchar(50) NOT NULL,
+  `elevation` int(11) NOT NULL,
   `lat` float NOT NULL DEFAULT '0',
   `lng` float NOT NULL DEFAULT '0',
   `hub` smallint(6) NOT NULL DEFAULT '0',
