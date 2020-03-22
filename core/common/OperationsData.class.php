@@ -527,13 +527,13 @@ class OperationsData extends CodonData {
      * 'icao' => 'KJFK',
      * 'iata' => 'JFK',
      * 'name' => 'John F Kennedy International',
-     * 'country' => 'US',
+     * 'city' => 'New York',
      * 'country' => 'US',
      * 'region' => 'US-NY'
      * 'tz' => 'America/New_York',
      * 'elevation' => '13',
      * 'lat' => '40.6398',
-     * 'lng' => '-73.7789',
+     * 'lon' => '-73.7789',		//data provided as 'lon' but displayed as 'lng' to work with phpVMS
      * 'hub' => 0,
      * 'fuelprice' => 0
      * );
@@ -545,6 +545,7 @@ class OperationsData extends CodonData {
         'icao' => 'KJFK',
 	'iata' => 'JFK'
         'name' => 'John F Kennedy International',
+	'city' => 'New York'l,
         'country' => 'US',
 	'region' => 'US-NY',
 	'tz' => 'America/New York',
@@ -616,7 +617,7 @@ class OperationsData extends CodonData {
         if ($data['fuelprice'] == '') $data['fuelprice'] = 0;
 
         $sql = "UPDATE " . TABLE_PREFIX . "airports
-			SET `icao`='{$data['icao']}', `iata'='{$data['iata']}', `name`='{$data['name']}', `country`='{$data['country']}', `city'='{$data['city']',
+			SET `icao`='{$data['icao']}', `iata'='{$data['iata']}', `name`='{$data['name']}', `city'='{$data['city']', `country`='{$data['country']}',
 			    `region`='{$data['region']}', `tz`='{$data['tz']}', `elevation`='{$data['elevation']}', `lat`='{$data['lat']}', `lng`='{$data['lon']}', 
 			    `hub`='{$data['hub']}', `chartlink`='{$data['chartlink']}', `fuelprice`='{$data['fuelprice']}'
 			WHERE `icao`='{$data['icao']}'";
@@ -720,17 +721,17 @@ class OperationsData extends CodonData {
             // Add the AP
             $data = array(
 	    	'icao' => $icao, 
-				'iata' => $apt->iata, 
-				'name' => $apt->name, 
-				'city' => $apt->city, 
-				'country' => $apt->country, 
-				'region' => $apt->region, 
-				'tz' => $apt->tz, 
-				'elevation' => $apt->elevation, 
-				'lat' => $apt->lat, 
-				'lon' => $apt->lng, 
-				'hub' => false, 
-				'fuelprice' =>$apt->jeta);
+		'iata' => $apt->iata, 
+		'name' => $apt->name, 
+		'city' => $apt->city, 
+		'country' => $apt->country, 
+		'region' => $apt->region, 
+		'tz' => $apt->tz, 
+		'elevation' => $apt->elevation, 
+		'lat' => $apt->lat, 
+		'lon' => $apt->lng, 
+		'hub' => false, 
+		'fuelprice' =>$apt->jeta);
 
             OperationsData::addAirport($data);
         }
