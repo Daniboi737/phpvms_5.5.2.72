@@ -525,10 +525,15 @@ class OperationsData extends CodonData {
      * 
      * $data = array(
      * 'icao' => 'KJFK',
-     * 'name' => 'Kennedy International',
-     * 'country' => 'USA',
+     * 'iata' => 'JFK',
+     * 'name' => 'John F Kennedy International',
+     * 'country' => 'US',
+     * 'country' => 'US',
+     * 'region' => 'US-NY'
+     * 'tz' => 'America/New_York',
+     * 'elevation' => '13',
      * 'lat' => '40.6398',
-     * 'lng' => '-73.7787',
+     * 'lng' => '-73.7789',
      * 'hub' => 0,
      * 'fuelprice' => 0
      * );
@@ -538,19 +543,24 @@ class OperationsData extends CodonData {
 
         /*$data = array(
         'icao' => 'KJFK',
-        'name' => 'Kennedy International',
-        'country' => 'USA',
+	'iata' => 'JFK'
+        'name' => 'John F Kennedy International',
+        'country' => 'US',
+	'region' => 'US-NY',
+	'tz' => 'America/New York',
+	'elevation' => '13',
         'lat' => '40.6398',
-        'lng' => '-73.7787',
+        'lon' => '-73.7789',		//data provided as 'lon' but displayed as 'lng' to work with phpVMS
         'hub' => false,
         'fuelprice' => 0
         );
         */
-
+	
         if ($data['icao'] == '') return false;
 
         $data['icao'] = strtoupper(DB::escape($data['icao']));
         $data['name'] = DB::escape($data['name']);
+	$data['city'] = DB::escape($data['city']);
 
         if ($data['hub'] === true) $data['hub'] = 1;
         else  $data['hub'] = 0;
@@ -562,10 +572,11 @@ class OperationsData extends CodonData {
         }
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "airports 
-					(	`icao`, `name`, `country`, `lat`, `lng`, `hub`, `chartlink`, `fuelprice`)
-					VALUES (
-						'{$data['icao']}', '{$data['name']}', '{$data['country']}', 
-						{$data['lat']}, {$data['lng']}, {$data['hub']}, '{$data['chartlink']}', {$data['fuelprice']})";
+		(`icao`, `iata`, `name`, `city`, `country`, `region`, `tz`, `elevation`, `lat`, `lng`, `hub``, `fuelprice`, `chartlink)
+		VALUES (
+			'{$data['icao']}', '{$data['iata']}', '{$data['name']}', `{$data['city']}', '{$data['country']}', 
+			'{$data['region']}', '{$data['tz']}', '{$data['elevation']}', '{$data['lat']}', '{$data['lon']}', 
+			'{$data['hub']}', {$data['fuelprice']}), '{$data['chartlink']}')";
 
         $res = DB::query($sql);
 
@@ -581,10 +592,15 @@ class OperationsData extends CodonData {
      * Edit the airport
      * $data = array(
      * 'icao' => 'KJFK',
-     * 'name' => 'Kennedy International',
-     * 'country' => 'USA',
+     * 'iata' => 'JFK',
+     * 'name' => 'John F Kennedy International',
+     * 'city' => 'New York',
+     * 'country' => 'US',
+     * 'region' => 'US-NY',
+     * 'tz' => 'America/New York',
+     * 'elevation' => '13',
      * 'lat' => '40.6398',
-     * 'lng' => '-73.7787',
+     * 'lon' => '-73.7789',		//data provided as 'lon' but displayed as 'lng' to work with phpVMS
      * 'hub' => false,
      * 'fuelprice' => 0
      * );
@@ -592,6 +608,7 @@ class OperationsData extends CodonData {
     public static function editAirport($data) {
         $data['icao'] = strtoupper(DB::escape($data['icao']));
         $data['name'] = DB::escape($data['name']);
+	$data['city'] = DB::escape($data['city']);
 
         if ($data['hub'] === true) $data['hub'] = 1;
         else  $data['hub'] = 0;
@@ -599,10 +616,10 @@ class OperationsData extends CodonData {
         if ($data['fuelprice'] == '') $data['fuelprice'] = 0;
 
         $sql = "UPDATE " . TABLE_PREFIX . "airports
-					SET `icao`='{$data['icao']}', `name`='{$data['name']}', `country`='{$data['country']}', 
-						`lat`={$data['lat']}, `lng`={$data['lng']}, `hub`={$data['hub']}, 
-						`chartlink`='{$data['chartlink']}', `fuelprice`={$data['fuelprice']}
-					WHERE `icao`='{$data['icao']}'";
+			SET `icao`='{$data['icao']}', `iata'='{$data['iata']}', `name`='{$data['name']}', `country`='{$data['country']}', `iata'='{$data['iata']',
+			    `region`='{$data['region']}', `tz`='{$data['tz']}', `elevation`='{$data['elevation']}', `lat`='{$data['lat']}', `lng`='{$data['lon']}', 
+			    `hub`='{$data['hub']}', `chartlink`='{$data['chartlink']}', `fuelprice`='{$data['fuelprice']}'
+			WHERE `icao`='{$data['icao']}'";
 
         $res = DB::query($sql);
 
@@ -671,8 +688,7 @@ class OperationsData extends CodonData {
 
         if (!is_object($arricao)) $arricao = self::getAirportInfo($arricao);
 
-        return SchedulesData::distanceBetweenPoints($depicao->lat, $depicao->lng, $arricao->
-            lat, $arricao->lng);
+        return SchedulesData::distanceBetweenPoints($depicao->lat, $depicao->lng, $arricao->lat, $arricao->lng);
     }
 
     /**
@@ -682,7 +698,7 @@ class OperationsData extends CodonData {
     public static function RetrieveAirportInfo($icao) {
         $icao = strtoupper($icao);
 
-        $url = Config::Get('PHPVMS_API_SERVER') . '/index.php/airport/get/' . $icao;
+        $url = Config::Get('PHPVMS_API_SERVER') . "/api/airports/" + icao + "&callback?"; //new vaCentral
 
         # Updated to use CodonWebServer instead of simplexml_load_url() straight
         #	Could cause errors
@@ -702,9 +718,19 @@ class OperationsData extends CodonData {
             }
 
             // Add the AP
-            $data = array('icao' => $icao, 'name' => $apt->name, 'country' => $apt->
-                countryName, 'lat' => $apt->lat, 'lng' => $apt->lng, 'hub' => false, 'fuelprice' =>
-                $apt->jeta);
+            $data = array(
+	    	'icao' => $icao, 
+				'iata' => $apt->iata, 
+				'name' => $apt->name, 
+				'city' => $apt->city, 
+				'country' => $apt->country, 
+				'region' => $apt->region, 
+				'tz' => $apt->tz, 
+				'elevation' => $apt->elevation, 
+				'lat' => $apt->lat, 
+				'lon' => $apt->lng, 
+				'hub' => false, 
+				'fuelprice' =>$apt->jeta);
 
             OperationsData::addAirport($data);
         }
