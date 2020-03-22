@@ -616,7 +616,7 @@ class OperationsData extends CodonData {
         if ($data['fuelprice'] == '') $data['fuelprice'] = 0;
 
         $sql = "UPDATE " . TABLE_PREFIX . "airports
-			SET `icao`='{$data['icao']}', `iata'='{$data['iata']}', `name`='{$data['name']}', `country`='{$data['country']}', `iata'='{$data['iata']',
+			SET `icao`='{$data['icao']}', `iata'='{$data['iata']}', `name`='{$data['name']}', `country`='{$data['country']}', `city'='{$data['city']',
 			    `region`='{$data['region']}', `tz`='{$data['tz']}', `elevation`='{$data['elevation']}', `lat`='{$data['lat']}', `lng`='{$data['lon']}', 
 			    `hub`='{$data['hub']}', `chartlink`='{$data['chartlink']}', `fuelprice`='{$data['fuelprice']}'
 			WHERE `icao`='{$data['icao']}'";
