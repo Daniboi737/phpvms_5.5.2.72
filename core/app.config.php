@@ -266,7 +266,7 @@ Config::Set('EMAIL_RETURN_PATH', '');
 
 /*	Check the phpVMS forums for status of phpVMS API server and VACentral.
 	As of this release, both are down. Check the forums for additional info */
-Config::Set('PHPVMS_API_SERVER', 'http://api.vacentral.net');
+Config::Set('PHPVMS_API_SERVER', 'https://api.vacentral.net');
 Config::Set('PHPVMS_NEWS_FEED', 'http://feeds.feedburner.com/phpvms');
 Config::Set('VACENTRAL_NEWS_FEED', 'http://feeds.feedburner.com/vacentral');
 
@@ -454,7 +454,7 @@ Config::Set('TABLE_LIST', array(
 Config::Set('VACENTRAL_ENABLED', false);
 Config::Set('VACENTRAL_DEBUG_MODE', false);
 Config::Set('VACENTRAL_DEBUG_DETAIL', 0);
-Config::Set('VACENTRAL_API_SERVER', 'http://api.vacentral.net');
+Config::Set('VACENTRAL_API_SERVER', 'https://api.vacentral.net');
 Config::Set('VACENTRAL_API_KEY', '');
 Config::Set('VACENTRAL_DATA_FORMAT', 'json');
 
@@ -583,7 +583,7 @@ define('ACTIVITY_NEW_AWARD', 4);
 define('ACTIVITY_NEW_BID', 5);
 define('ACTIVITY_TWITTER', 6);
 
-define('TWITTER_STATUS_URL', 'http://api.twitter.com/1/statuses/user_timeline.json?include_entities=0&screen_name=');
+define('TWITTER_STATUS_URL', 'https://api.twitter.com/1/statuses/user_timeline.json?include_entities=0&screen_name=');
 
 define('NAV_NDB', 2);
 define('NAV_VOR', 3);
