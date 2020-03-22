@@ -262,9 +262,9 @@ function lookupICAO() {
 			}
 
 				$("#airporticao").val(icao);
-				$("#airportsiata").val(data.iata);
+				$("#airportiata").val(data.iata);
 				$("#airportname").val(data.name);
-				$("#airportcitu").val(data.city);
+				$("#airportcity").val(data.city);
 				$("#airportcountry").val(data.country);
 				$("#airportregion").val(data.region);
 				$("#airporttimezone").val(data.tz);
