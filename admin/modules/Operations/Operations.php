@@ -389,7 +389,7 @@ class Operations extends CodonModule {
             $edit = '<a href="#" onclick="editairport(\'' . $row->icao . '\'); return false;">Edit</a>';
 
             $tmp = array('id' => $row->id, 'cell' => array( # Each column, in order
-                $row->icao, $name, $row->country, $row->fuelprice, $row->lat, $row->lng, $edit, ), );                
+                $row->icao, $row->iata, $name, $row->city, $row->country, $row->region, $row->tz, $row->elevation, $row->fuelprice, $row->lat, $row->lng, $edit, ), );                
 
             $json['rows'][] = $tmp;
         }
@@ -841,7 +841,7 @@ class Operations extends CodonModule {
             'fullname' => $this->post->fullname, 'registration' => $this->post->registration,
             'downloadlink' => $this->post->downloadlink, 'imagelink' => $this->post->imagelink,
             'range' => $this->post->range, 'weight' => $this->post->weight, 'cruise' => $this->post->cruise,
-            'maxpax' => $this->post->maxpax, 'maxcargo' => $this->post->maxcargo, 'airline' =>$this->post->airline, 'minrank' =>
+            'maxpax' => $this->post->maxpax, 'maxcargo' => $this->post->maxcargo, 'airline' => $this->post->airline, 'minrank' =>
             $this->post->minrank, 'enabled' => $this->post->enabled);
 
         OperationsData::EditAircraft($data);
@@ -867,12 +867,12 @@ class Operations extends CodonModule {
      */
     protected function add_airport_post() {
 
-        // this if statement dictates the required fields
+        // this if statement dictates the required items
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->country ==
             '' || $this->post->lat == '' || $this->post->lon == '') {
-            $this->set('message', 'Some required fields were blank!');
-            $this->render('core_error.php');
-            return;
+            		$this->set('message', 'Some required fields were blank!');
+            		$this->render('core_error.php');
+            	return;
         }
 
         if ($this->post->hub == 'true') $this->post->hub = true;
@@ -882,7 +882,7 @@ class Operations extends CodonModule {
 			'icao' => $this->post->icao, 
 			'iata' => $this->post->iata, 
 			'name' => $this->post->name, 
-            'city' => $this->post->city, 
+			'city' => $this->post->city, 
 			'country' => $this->post->country,
 			'region' => $this->post->region, 
 			'tz' => $this->post->tz, 
@@ -923,9 +923,9 @@ class Operations extends CodonModule {
         // this if statement dictates the required items
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->country ==
             '' || $this->post->lat == '' || $this->post->lon == '') {
-            $this->set('message', 'Some required fields were blank!');
-            $this->render('core_message.php');
-            return;
+            		$this->set('message', 'Some required fields were blank!');
+            		$this->render('core_message.php');
+            	return;
         }
 
         if ($this->post->hub == 'true') $this->post->hub = true;
@@ -936,7 +936,7 @@ class Operations extends CodonModule {
 			'icao' => $this->post->icao, 
 			'iata' => $this->post->iata, 
 			'name' => $this->post->name, 
-            'city' => $this->post->city, 
+			'city' => $this->post->city, 
 			'country' => $this->post->country, 
 			'region' => $this->post->region, 
 			'tz' => $this->post->tz, 
