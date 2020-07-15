@@ -543,9 +543,9 @@ class OperationsData extends CodonData {
 
         /*$data = array(
         'icao' => 'KJFK',
-	'iata' => 'JFK'
+	'iata' => 'JFK',
         'name' => 'John F Kennedy International',
-	'city' => 'New York'l,
+	'city' => 'New York',
         'country' => 'US',
 	'region' => 'US-NY',
 	'tz' => 'America/New York',
@@ -575,9 +575,9 @@ class OperationsData extends CodonData {
         $sql = "INSERT INTO " . TABLE_PREFIX . "airports 
 		(`icao`, `iata`, `name`, `city`, `country`, `region`, `tz`, `elevation`, `lat`, `lng`, `hub``, `fuelprice`, `chartlink)
 		VALUES (
-			'{$data['icao']}', '{$data['iata']}', '{$data['name']}', `{$data['city']}', '{$data['country']}', 
+			'{$data['icao']}', '{$data['iata']}', '{$data['name']}', '{$data['city']}', '{$data['country']}', 
 			'{$data['region']}', '{$data['tz']}', '{$data['elevation']}', '{$data['lat']}', '{$data['lon']}', 
-			'{$data['hub']}', {$data['fuelprice']}), '{$data['chartlink']}')";
+			'{$data['hub']}', '{$data['fuelprice']})', '{$data['chartlink']}')";
 
         $res = DB::query($sql);
 
@@ -617,7 +617,7 @@ class OperationsData extends CodonData {
         if ($data['fuelprice'] == '') $data['fuelprice'] = 0;
 
         $sql = "UPDATE " . TABLE_PREFIX . "airports
-			SET `icao`='{$data['icao']}', `iata'='{$data['iata']}', `name`='{$data['name']}', `city'='{$data['city']}', `country`='{$data['country']}',
+			SET `icao`='{$data['icao']}', `iata`='{$data['iata']}', `name`='{$data['name']}', `city`='{$data['city']}', `country`='{$data['country']}',
 			    `region`='{$data['region']}', `tz`='{$data['tz']}', `elevation`='{$data['elevation']}', `lat`='{$data['lat']}', `lng`='{$data['lon']}', 
 			    `hub`='{$data['hub']}', `chartlink`='{$data['chartlink']}', `fuelprice`='{$data['fuelprice']}'
 			WHERE `icao`='{$data['icao']}'";
@@ -699,27 +699,20 @@ class OperationsData extends CodonData {
     public static function RetrieveAirportInfo($icao) {
         $icao = strtoupper($icao);
 
-        $url = Config::Get('PHPVMS_API_SERVER') . "/api/airports/" + icao + "&callback?"; //new vaCentral
+        $url = Config::Get('PHPVMS_API_SERVER') . "/api/airports/" + icao; //new vaCentral
 
-        # Updated to use CodonWebServer instead of simplexml_load_url() straight
-        #	Could cause errors
-        $file = new CodonWebService();
-        $contents = @$file->get($url);
+        # TEST ONLY
+	$file = @file_get_contents($url);
+	
+	# Nothing is received from the API
+	if ($file === false) {
+		return false;
+	}
 
-        $reader = json_decode($contents);
-        if ($reader->totalResultsCount == 0 || !$reader) {
-            return false;
-        } else {
-            if (isset($reader->airports)) {
-                $apt = $reader->airports[0];
-            }
-
-            if (!isset($apt->jeta)) {
-                $apt->jeta = '';
-            }
+	$json = json_decode($file);
 
             // Add the AP
-            $data = array(
+            $data = [
 	    	'icao' => $icao, 
 		'iata' => $apt->iata, 
 		'name' => $apt->name, 
@@ -729,12 +722,12 @@ class OperationsData extends CodonData {
 		'tz' => $apt->tz, 
 		'elevation' => $apt->elevation, 
 		'lat' => $apt->lat, 
-		'lon' => $apt->lng, 
+		'lon' => $apt->lon, 
 		'hub' => false, 
-		'fuelprice' =>$apt->jeta);
+		// 'fuelprice' =>$apt->jeta); // 'fuelprice' => null, // Not presently supported
+	    ];
 
             OperationsData::addAirport($data);
-        }
 
         return self::GetAirportInfo($icao);
     }
