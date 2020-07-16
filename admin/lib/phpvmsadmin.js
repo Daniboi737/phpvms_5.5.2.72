@@ -250,7 +250,7 @@ function lookupICAO() {
 	$("#statusbox").html("Fetching airport data...");
 	$("#lookupicao").hide();
 
-	url = phpvms_api_server + "/api/airports/" + icao + "?callback=?"; //new vaCentral 
+	url = phpvms_api_server + "/api/airports/" + icao + "?callback?"; //new vaCentral 
 
 	$.getJSON(url,
 		function(data) {
